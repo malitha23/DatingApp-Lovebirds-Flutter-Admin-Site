@@ -43,8 +43,6 @@ jobs:
           script: |
             cd /var/www/admin.lovebird4u.com || exit 1
             rm -rf *  # Remove all existing files
-            mkdir -p build
-            scp -r ~/build/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com/build/ || exit 1
-            npm install || exit 1
-            pm2 restart lovebird-backend || exit 1
+            scp -r ~/build/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
+            pm2 restart lovebird-admin-site || exit 1
             pm2 save || exit 1
