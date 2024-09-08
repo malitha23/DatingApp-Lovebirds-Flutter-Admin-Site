@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Lovebirds Dating App - Admin Features
 
 ## Admin Features
@@ -53,3 +54,6 @@ For support or more information on managing admin features, please contact [Your
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+=======
+LBD-Backend
+>>>>>>> master
