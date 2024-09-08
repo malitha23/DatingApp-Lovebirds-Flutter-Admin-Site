@@ -3,7 +3,7 @@ name: 🚀 Deploy File to VPS
 on:
   push:
     branches:
-      - main
+      - main  # Trigger deployment on push to the main branch
 
 jobs:
   FTP-Deploy-Action:
@@ -14,33 +14,34 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 2  # Fetch latest 2 commits to ensure history
 
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '16'  # Set Node.js version to 16
 
       - name: Cache npm dependencies
         uses: actions/cache@v3
         id: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}  # Cache based on OS and lock file
 
       - name: 🔨 Install Dependencies and Build
         run: |
-          npm install --force
-          npm install axios --save
-          npm run build
+          npm install --force  # Install all dependencies with --force flag
+          npm install axios --save  # Install axios as a dependency
+          npm run build  # Run build command (ensure this is defined in package.json)
         env:
-         CI: false
+          CI: false  # Disable CI flag to avoid failing on warnings
 
       - name: 📂 Sync folders and files to the server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: build/
-          server-dir: /var/www/admin.lovebird4u.com/
+          server: ${{ secrets.FTP_SERVER }}  # FTP server (e.g., ftp://your-server.com)
+          username: ${{ secrets.FTP_USERNAME }}  # FTP username
+          password: ${{ secrets.FTP_PASSWORD }}  # FTP password
+          local-dir: build/  # Local build directory to upload
+          server-dir: /var/www/admin.lovebird4u.com/  # Remote directory on the server
+          protocol: ftps  # Use FTPS (FTP over SSL/TLS) for secure connection
