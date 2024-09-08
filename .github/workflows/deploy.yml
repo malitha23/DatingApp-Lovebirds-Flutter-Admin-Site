@@ -1,4 +1,4 @@
-name: 🚀 Deploy All Files to VPS via SSH
+name: 🚀 Deploy File to VPS via SSH
 
 on:
   push:
@@ -13,34 +13,25 @@ jobs:
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2  # Fetch latest 2 commits to ensure history
 
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Set Node.js version to 16
+          node-version: '16'
 
       - name: Cache npm dependencies
         uses: actions/cache@v3
-        id: cache-node-modules
         with:
           path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}  # Cache based on OS and lock file
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: 🔨 Install Dependencies and Build
         run: |
-          npm install --force  # Install all dependencies with --force flag
-          npm install axios --save  # Install axios as a dependency
-          npm run build  # Run build command (ensure this is defined in package.json)
+          npm install --force
+          npm install axios --save
+          npm run build
         env:
-          CI: false  # Disable CI flag to avoid failing on warnings
-
-      - name: 📂 Upload Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: build/  # Path to the build directory
+          CI: false
 
       - name: 📂 Deploy to Server via SSH
         uses: appleboy/ssh-action@master
@@ -50,14 +41,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}  # SSH private key
           port: 22  # SSH port (default is 22)
           script: |
-            cd /var/www/admin.lovebird4u.com || exit 1  # Change to target directory
-            rm -rf *  # Remove all existing files (use carefully)
-            mkdir -p build  # Ensure the build directory exists
-            scp -r ~/build/* username@SERVER_HOST:/var/www/admin.lovebird4u.com/build/ || exit 1  # Copy build artifacts to server
-            npm install || exit 1  # Install/update dependencies
-            pm2 restart lovebird-backend || exit 1  # Restart the backend service with PM2
-            pm2 save || exit 1  # Save PM2 process list
-
-      - name: 🗑️ Clean up Node modules
-        run: |
-          rm -rf node_modules  # Remove node_modules directory
+            cd /var/www/admin.lovebird4u.com || exit 1
+            rm -rf *  # Remove all existing files
+            mkdir -p build
+            scp -r ~/build/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com/build/ || exit 1
+            npm install || exit 1
+            pm2 restart lovebird-backend || exit 1
+            pm2 save || exit 1
