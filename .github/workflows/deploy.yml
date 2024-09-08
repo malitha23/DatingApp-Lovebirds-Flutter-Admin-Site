@@ -43,6 +43,6 @@ jobs:
           script: |
             cd /var/www/admin.lovebird4u.com || exit 1
             rm -rf *  # Remove all existing files
-            scp -r ~/build/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
+            rsync -avz --exclude='.git' ~/build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
             pm2 restart lovebird-admin-site || exit 1
             pm2 save || exit 1
