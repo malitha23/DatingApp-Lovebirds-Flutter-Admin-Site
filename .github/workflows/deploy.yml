@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
       - name: Use Node.js 16
         uses: actions/setup-node@v3
@@ -29,13 +27,17 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: 🔨 Install Dependencies and Build
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: |
           npm install --force
           npm install axios --save
           npm run build
         env:
           CI: false
+
+      - name: List Build Directory Contents
+        run: |
+          echo "Contents of the build directory:"
+          ls -R build
 
       - name: 📂 Deploy to Server via SSH
         uses: appleboy/ssh-action@v0.1.3
@@ -46,7 +48,10 @@ jobs:
           port: 22
           script: |
             cd /var/www/admin.lovebird4u.com || exit 1
+            echo "Removing old files in the server directory..."
             find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
-            rsync -avz --exclude='.git' ./build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
+            echo "Starting rsync file transfer..."
+            rsync -avz --exclude='.git' ./build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com
+            echo "File transfer complete. Restarting the app..."
             pm2 restart lovebird-admin-site || exit 1
             pm2 save || exit 1
