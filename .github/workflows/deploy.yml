@@ -29,8 +29,8 @@ jobs:
 
       - name: 📂 Build Project Locally
         run: |
-          npm install
-          npm run build
+          CI=false npm install
+          CI=false npm run build
 
       - name: 📂 Deploy Build Contents to Server via SCP
         uses: appleboy/scp-action@v0.1.3
@@ -43,3 +43,70 @@ jobs:
           target: /var/www/admin.lovebird4u.com  # Path to the destination folder on the VPS
 
 
+
+
+
+# name: 🚀 Deploy File to VPS via SSH
+
+# on:
+#   push:
+#     branches:
+#       - main  # Trigger deployment on push to the main branch
+
+# jobs:
+#   deploy:
+#     name: 🎉 Deploy via SSH
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: 🚚 Get latest code
+#         uses: actions/checkout@v3
+
+#       - name: Use Node.js 16
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: '16'
+
+#       - name: Cache npm dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.npm
+#           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#           restore-keys: |
+#             ${{ runner.os }}-node-
+
+#       - name: 📂 Execute SSH Commands on VPS
+#         uses: appleboy/ssh-action@v0.1.3
+#         with:
+#           host: ${{ secrets.SERVER_HOST }}
+#           username: ${{ secrets.SERVER_USER }}
+#           key: ${{ secrets.SERVER_SSH_KEY }}
+#           port: 22
+#           script: |
+#             cd /var/www/admin.lovebird4u.com || exit 1
+#             rm -rf * || exit 1
+#             echo "All files and directories deleted in /var/www/admin.lovebird4u.com"
+
+#       - name: 📂 Deploy Build Contents to Server via SCP
+#         uses: appleboy/scp-action@v0.1.3
+#         with:
+#           host: ${{ secrets.SERVER_HOST }}
+#           username: ${{ secrets.SERVER_USER }}
+#           key: ${{ secrets.SERVER_SSH_KEY }}
+#           port: 22
+#           source: build/*   # Copy all files inside the 'build' folder without the 'build' folder itself
+#           target: /var/www/admin.lovebird4u.com  # Path to the destination folder on the VPS
+      
+#       - name: 📂 Execute SSH Commands on VPS
+#         uses: appleboy/ssh-action@v0.1.3
+#         with:
+#           host: ${{ secrets.SERVER_HOST }}
+#           username: ${{ secrets.SERVER_USER }}
+#           key: ${{ secrets.SERVER_SSH_KEY }}
+#           port: 22
+#           script: |
+#             cd /var/www/admin.lovebird4u.com/build || exit 1
+
+#             mv /var/www/admin.lovebird4u.com/build/* /var/www/admin.lovebird4u.com/ || exit 1
+
+#             rm -rf build
