@@ -1,13 +1,11 @@
-name: 🚀 Deploy File to cPanel via SSH
-
+name: 🚀 Deploy File to cPanel
 on:
   push:
     branches:
       - main
-
 jobs:
-  SSH-Deploy-Action:
-    name: 🎉 Deploy via SSH
+  FTP-Deploy-Action:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -28,29 +26,32 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      - name: 🔨 Install Dependencies and Build
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      - name: 🔨 Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: |
           npm install --force
           npm install axios --save
           npm run build
           git reset --hard
         env:
-          CI: false
-
-      - name: List Files
-        run: ls -R
-
-      - name: 📂 Deploy to Server via SSH
-        uses: appleboy/ssh-action@v0.1.3
+         CI: false
+      - name: 📂 Sync folders and files to the server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.SERVER_HOST }}  # Your VPS IP or hostname
-          username: ${{ secrets.SERVER_USER }}  # SSH username (e.g., root)
-          key: ${{ secrets.SERVER_SSH_KEY }}  # SSH private key
-          port: 22
-          script: |
-            cd /var/www/admin.lovebird4u.com || exit 1
-            rm -rf *  # Remove all existing files
-            rsync -avz --exclude='.git' ./build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
-            pm2 restart lovebird-admin-site || exit 1
-            pm2 save || exit 1
+              server: ${{ secrets.FTP_SERVER }}
+              username: ${{ secrets.FTP_USERNAME }}
+              key: ${{ secrets.SERVER_SSH_KEY }}
+              port: 22
+              local-dir: build/
+              server-dir: /var/www/admin.lovebird4u.com/
+        # with:
+        #   host: ${{ secrets.SERVER_HOST }}  # Your VPS IP or hostname
+        #   username: ${{ secrets.SERVER_USER }}  # SSH username (e.g., root)
+        #   key: ${{ secrets.SERVER_SSH_KEY }}  # SSH private key
+        #   port: 22
+        #   script: |
+        #     cd /var/www/admin.lovebird4u.com || exit 1
+        #     rm -rf *  # Remove all existing files
+        #     rsync -avz --exclude='.git' ./build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
+        #     pm2 restart lovebird-admin-site || exit 1
+        #     pm2 save || exit 1
