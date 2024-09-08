@@ -51,7 +51,5 @@ jobs:
             echo "Removing old files in the server directory..."
             find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
             echo "Starting rsync file transfer..."
-            rsync -avz --exclude='.git' ./build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com
-            echo "File transfer complete. Restarting the app..."
-            pm2 restart lovebird-admin-site || exit 1
-            pm2 save || exit 1
+            rsync -avz --exclude='.git' build/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com
+
