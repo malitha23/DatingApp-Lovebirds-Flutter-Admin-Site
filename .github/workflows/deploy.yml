@@ -48,6 +48,6 @@ jobs:
           script: |
             cd /var/www/admin.lovebird4u.com || exit 1
             find . -maxdepth 1 ! -name 'DatingAppFlutter-Backend' ! -name '.' -exec rm -rf {} + || exit 1
-            scp -r /home/runner/work/${{ github.repository }}/build-output/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
+            scp -r ./build-output/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
             pm2 restart lovebird-admin-site || exit 1
             pm2 save || exit 1
