@@ -48,6 +48,14 @@ jobs:
           script: |
             # Navigate to the project directory on the server and create directories if needed
             mkdir -p /var/www/admin.lovebird4u.com/code || exit 1
+
+            # Check if the directory is a Git repository
+            if [ ! -d ".git" ]; then
+              echo "Directory is not a Git repository. Cloning repository..."
+              # Clone the repository if not already present
+              git clone https://github.com/malitha23/DatingApp-Lovebirds-Flutter-Admin-Site.git /var/www/admin.lovebird4u.com/code || exit 1
+            fi
+
             cd /var/www/admin.lovebird4u.com/code || exit 1
 
             # Pull the latest code from the repository
@@ -57,13 +65,3 @@ jobs:
             npm install || exit 1
             npm run build || exit 1
             
-            # Clean up old files (except 'DatingAppFlutter-Backend' directory)
-            cd /var/www/admin.lovebird4u.com || exit 1
-            find . -maxdepth 1 ! -name 'DatingAppFlutter-Backend' ! -name '.' -exec rm -rf {} + || exit 1
-            
-            # Deploy new files
-            rsync -avz --delete build-output/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com/ || exit 1
-            
-            # Restart and save PM2 process list
-            pm2 restart lovebird-admin-site || exit 1
-            pm2 save || exit 1
