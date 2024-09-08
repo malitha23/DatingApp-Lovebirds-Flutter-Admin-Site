@@ -27,7 +27,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: 📂 Deploy to Server via SSH
+      - name: 📂 Deploy Build to Server via SSH
+        uses: appleboy/scp-action@v0.1.3 # Using SCP to copy the build folder
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          source: ./build/*   # Copy everything inside the build folder
+          target: /var/www/admin.lovebird4u.com/build  # Path to the destination folder on the VPS
+
+      - name: 📂 Execute SSH Commands on VPS
         uses: appleboy/ssh-action@v0.1.3
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -35,17 +45,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            # Remove the existing project directory if it exists
-            rm -rf /var/www/admin.lovebird4u.com/code || exit 1
+            cd /var/www/admin.lovebird4u.com/build || exit 1
 
-            # Recreate the project directory
-            mkdir -p /var/www/admin.lovebird4u.com/code || exit 1
-
-            # Clone the repository into the newly created directory
-            git clone https://github.com/malitha23/DatingApp-Lovebirds-Flutter-Admin-Site.git /var/www/admin.lovebird4u.com/code || exit 1
-
-            cd /var/www/admin.lovebird4u.com/code || exit 1
-
-            # Install dependencies and build the project on the server
-            npm install || exit 1
-            npm run build || exit 1
+            # Run any necessary commands, e.g., restarting services, changing permissions, etc.
+            echo "Deployment complete."
