@@ -1,4 +1,4 @@
-name: 🚀 Deploy File to VPS
+name: 🚀 Deploy File to VPS using SSH
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - main  # Trigger deployment on push to the main branch
 
 jobs:
-  FTP-Deploy-Action:
-    name: 🎉 Deploy
+  deploy:
+    name: 🎉 Deploy via SSH
     runs-on: ubuntu-latest
 
     steps:
@@ -36,12 +36,20 @@ jobs:
         env:
           CI: false  # Disable CI flag to avoid failing on warnings
 
-      - name: 📂 Sync folders and files to the server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 📂 Deploy to Server via SSH
+        uses: appleboy/ssh-action@master
         with:
-          server: ${{ secrets.FTP_SERVER }}  # FTP server (e.g., ftp://your-server.com)
-          username: ${{ secrets.FTP_USERNAME }}  # FTP username
-          password: ${{ secrets.FTP_PASSWORD }}  # FTP password
-          local-dir: build/  # Local build directory to upload
-          server-dir: /var/www/admin.lovebird4u.com/  # Remote directory on the server
-          protocol: ftps  # Use FTPS (FTP over SSL/TLS) for secure connection
+          host: ${{ secrets.SERVER_HOST }}  # Your VPS IP or hostname
+          username: ${{ secrets.SERVER_USER }}  # SSH username (e.g., root)
+          key: ${{ secrets.SERVER_SSH_KEY }}  # SSH private key
+          port: 22  # SSH port (default is 22)
+          script: |
+            cd /var/www/lovebird4u.com/DatingAppFlutter-Backend
+            git pull  # Pull latest changes from the repository
+            npm install  # Install/update dependencies
+            pm2 restart lovebird-backend  # Restart the backend service with PM2
+            pm2 save  # Save PM2 process list
+
+      - name: 🗑️ Clean up Node modules
+        run: |
+          rm -rf node_modules
