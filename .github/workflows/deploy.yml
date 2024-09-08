@@ -46,5 +46,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: build/**   # Copy the contents inside the 'build' folder
+          source: build/*   # Copy all files inside the 'build' folder without the 'build' folder itself
           target: /var/www/admin.lovebird4u.com  # Path to the destination folder on the VPS
