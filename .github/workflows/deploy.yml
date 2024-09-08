@@ -44,7 +44,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}  # SSH private key
           port: 22  # SSH port (default is 22)
           script: |
-            cd /var/www/lovebird4u.com/DatingAppFlutter-Backend
+            cd /var/www/admin.lovebird4u.com
             git pull  # Pull latest changes from the repository
             npm install  # Install/update dependencies
             pm2 restart lovebird-backend  # Restart the backend service with PM2
