@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
-  const navigate = useNavigate(); // Add this line to use navigate
+
   
   const handleLogout = () => {
     localStorage.removeItem('token');
