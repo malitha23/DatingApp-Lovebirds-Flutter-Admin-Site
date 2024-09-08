@@ -34,7 +34,7 @@ jobs:
           CI: false
 
       - name: Verify Build Output
-        run: ls -la /home/runner/work/${{ github.repository }}/${{ github.repository }}/build
+        run: ls -la /home/runner/work/${{ github.repository }}/build
 
       - name: 📂 Deploy to Server via SSH
         uses: appleboy/ssh-action@v0.1.3
@@ -46,6 +46,6 @@ jobs:
           script: |
             cd /var/www/admin.lovebird4u.com || exit 1
             find . -maxdepth 1 ! -name 'DatingAppFlutter-Backend' ! -name '.' -exec rm -rf {} + || exit 1
-            scp -r /home/runner/work/${{ github.repository }}/${{ github.repository }}/build/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
+            scp -r /home/runner/work/${{ github.repository }}/build/* ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/admin.lovebird4u.com || exit 1
             pm2 restart lovebird-admin-site || exit 1
             pm2 save || exit 1
