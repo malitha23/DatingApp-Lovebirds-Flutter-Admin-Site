@@ -29,8 +29,7 @@ jobs:
 
       - name: Update Dependencies
         run: |
-          npm install
-          npm audit fix --force
+          npm install --force
 
       - name: 📂 Build Project Locally
         run: |
