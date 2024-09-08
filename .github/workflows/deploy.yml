@@ -1,4 +1,4 @@
-name: 🚀 Deploy File to VPS using SSH
+name: 🚀 Deploy All Files to VPS via SSH
 
 on:
   push:
@@ -36,6 +36,12 @@ jobs:
         env:
           CI: false  # Disable CI flag to avoid failing on warnings
 
+      - name: 📂 Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: build/  # Path to the build directory
+
       - name: 📂 Deploy to Server via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -44,12 +50,14 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}  # SSH private key
           port: 22  # SSH port (default is 22)
           script: |
-            cd /var/www/admin.lovebird4u.com
-            git pull  # Pull latest changes from the repository
-            npm install  # Install/update dependencies
-            pm2 restart lovebird-backend  # Restart the backend service with PM2
-            pm2 save  # Save PM2 process list
+            cd /var/www/admin.lovebird4u.com || exit 1  # Change to target directory
+            rm -rf *  # Remove all existing files (use carefully)
+            mkdir -p build  # Ensure the build directory exists
+            scp -r ~/build/* username@SERVER_HOST:/var/www/admin.lovebird4u.com/build/ || exit 1  # Copy build artifacts to server
+            npm install || exit 1  # Install/update dependencies
+            pm2 restart lovebird-backend || exit 1  # Restart the backend service with PM2
+            pm2 save || exit 1  # Save PM2 process list
 
       - name: 🗑️ Clean up Node modules
         run: |
-          rm -rf node_modules
+          rm -rf node_modules  # Remove node_modules directory
