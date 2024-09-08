@@ -29,7 +29,6 @@ jobs:
 
       - name: Update Dependencies
         run: |
-          npm install -g npm
           npm install
           npm audit fix --force
 
