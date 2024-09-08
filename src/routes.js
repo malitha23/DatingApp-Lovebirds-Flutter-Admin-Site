@@ -14,7 +14,6 @@ import SignIn from "views/auth/SignIn";
 import {
   MdHome,
   MdSettingsBackupRestore ,
-  MdBarChart,
   MdPerson,
   MdLock,
   MdGroupAdd ,
