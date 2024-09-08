@@ -46,8 +46,11 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
-            # Navigate to the project directory on the server and pull the latest code
+            # Navigate to the project directory on the server and create directories if needed
+            mkdir -p /var/www/admin.lovebird4u.com/code || exit 1
             cd /var/www/admin.lovebird4u.com/code || exit 1
+
+            # Pull the latest code from the repository
             git pull || exit 1
             
             # Install dependencies and build the project on the server
