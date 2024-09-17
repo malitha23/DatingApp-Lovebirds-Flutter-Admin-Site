@@ -1,45 +1,54 @@
+/* Modal overlay to cover the entire screen with black opacity */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background with opacity */
+    background: rgba(0, 0, 0, 0.9); /* Black with 90% opacity */
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it appears above other content */
+    justify-content: center;
+    z-index: 1000; /* Ensure modal is on top */
 }
 
+/* Modal content container */
 .modal-content {
     position: relative;
-    width: auto;
-    height: 90%;
-    background-color: #fff;
+    max-width: 90vw; /* Maximum width relative to viewport width */
+    max-height: 90vh; /* Maximum height relative to viewport height */
+    background-color: #000; /* Black background for image contrast */
     border-radius: 8px;
     overflow: hidden;
 }
 
+/* Close button styling */
 .close-button {
     position: absolute;
-    top: 0px;
+    top: 10px;
     right: 10px;
-    font-size: 36px;
-    color: #fff;
+    font-size: 24px;
+    color: #fff; /* White color for visibility on dark overlay */
     cursor: pointer;
-    z-index: 1100; /* Ensure it appears above the content */
+    transition: color 0.3s;
 }
 
+.close-button:hover {
+    color: #ff0000; /* Change color on hover */
+}
+
+/* Container to center the image */
 .image-container {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
-.image-container img {
+/* Style for fullscreen image */
+.fullscreen-image {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* Ensures the image fits within the container */
+    object-fit: contain; /* Maintain aspect ratio */
 }

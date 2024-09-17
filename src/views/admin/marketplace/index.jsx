@@ -613,7 +613,7 @@ const Marketplace = () => {
 
       </div>
 
-      <ImageFullScreanModal isOpen={isModalOpen} onClose={handleCloseModal} content={modalContent} position={modalPosition} />
+      <ImageFullScreanModal isOpen={isModalOpen} onClose={handleCloseModal} content={modalContent} position={modalPosition}  className="fullscreen-image" />
       <div className="mb-4 flex">
         <h1 className='mr-5 bg-blueSecondary text-white text-md p-2'>Search</h1>
         <input
