@@ -86,7 +86,7 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
                     userId: item.userId,
                     status: approvedValue,
                     price: price,
-                    duration: months === '0' ?? 1,
+                    duration: months === 0 ? 1 : months,
                     packageStartDate: startDate,
                     packageEndDate: endDate,
                     plan_name: item.plan_name,
