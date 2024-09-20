@@ -44,6 +44,8 @@ const App = () => {
       console.error("Authentication check failed:", error);
       setIsAuthenticated(false);
       setIsAdmin(false);
+      localStorage.removeItem('token');
+      window.location.href = '/'; 
     } finally {
       setLoading(false);
     }

@@ -1,0 +1,120 @@
+/* DetailsModal.css */
+
+.details-modal-content {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+}
+
+.details-modal-content .left-column,
+.details-modal-content .right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    float: left;
+}
+
+.details-modal-content .left-column {
+    padding-right: 20px; /* Space between columns */
+}
+
+.details-modal-content .right-column {
+    padding-left: 20px; /* Space between columns */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Align items to the right */
+}
+
+.details-modal-content .top-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.details-modal-content .top-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.details-modal-content p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.details-modal-content .highlight {
+    font-weight: bold;
+    color: #333;
+}
+
+.details-modal-content input[type="text"] {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.details-modal-content input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.details-modal-content select {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 16px;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.details-modal-content select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.details-modal-content .receipt-image {
+    max-width: 100px;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.p-dialog {
+    border-radius: 8px;
+}
+
+.p-dialog .p-dialog-header {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+}
+
+.p-dialog .p-dialog-header .p-dialog-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.p-dialog .p-dialog-content {
+    padding: 20px;
+}
+
+.p-dialog .p-dialog-footer {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+}
+.status-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.status-container p {
+    margin: 0;
+}

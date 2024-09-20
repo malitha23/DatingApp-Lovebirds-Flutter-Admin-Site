@@ -5,7 +5,6 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { Dialog } from 'primereact/dialog';
-import { useNavigate } from 'react-router-dom';
 import 'primereact/resources/themes/saga-blue/theme.css'; // PrimeReact theme
 import 'primereact/resources/primereact.min.css'; // PrimeReact styles
 import 'primeicons/primeicons.css'; // PrimeIcons
@@ -24,7 +23,6 @@ const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null); // For modal content
   const [modalVisible, setModalVisible] = useState(false); // For modal visibility
-  const navigate = useNavigate();
   const statusOptions = ['approve', 'pending', 'reject'];
   const toast = useRef(null); // Reference for Toast
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,6 +31,7 @@ const Marketplace = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [deletedialogVisible, setdeleteDialogVisible] = useState(false);
   const [isSuccess, setIsSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
   const [tabledataloading, settabledataLoading] = useState(false);
@@ -88,10 +87,10 @@ const Marketplace = () => {
         return () => clearInterval(intervalId);
       }
     };
-    
+
     const fetchUsersauto = async () => {
       const token = localStorage.getItem('token'); // Get token from localStorage
-  
+
       try {
         const response = await fetch(API_ENDPOINTS.NewUsersFetch, {
           method: 'GET', // HTTP method
@@ -101,14 +100,14 @@ const Marketplace = () => {
             'Accept': 'application/json' // Optional: specify acceptable response format
           }
         });
-  
+
         if (!response.ok) {
           // Handle HTTP errors
           throw new Error('Network response was not ok');
         }
-  
+
         const data = await response.json();
-  
+
         // Map API response to the format used in the component
         const mappedUsers = data.map(user => ({
           id: user.user_id,
@@ -121,7 +120,7 @@ const Marketplace = () => {
         const allUsers = data.map(user => ({
           ...user // Add all user details here
         }));
-  
+
         // Update state with new users only
         setUsers(prevUsers => {
           const existingUserIds = new Set(prevUsers.map(user => user.id));
@@ -132,8 +131,8 @@ const Marketplace = () => {
           combinedUsers.sort((a, b) => b.id - a.id);
           return combinedUsers;
         });
-  
-  
+
+
         setAllUsers(allUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -141,7 +140,7 @@ const Marketplace = () => {
       }
     };
 
-    
+
     fetchUsers();
 
   }, []);
@@ -166,54 +165,11 @@ const Marketplace = () => {
     }
   };
 
-  const onUpdate = (rowData) => {
-    navigate('/update-user', { state: { user: rowData } });
-  };
 
-  const onDelete = async (rowData) => {
-    const token = localStorage.getItem('token'); // Get token from localStorage
-    try {
-      const response = await fetch(`${API_ENDPOINTS.NewUsersDetete}${rowData.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete user');
-      }
-
-      const result = await response.json(); // Parse the response JSON
-
-      if (result.message === 'User deleted successfully') {
-
-
-        console.log('User deleted successfully');
-
-        // Show a success message popup using Toast
-        toast.current.show({ severity: 'success', summary: 'Success', detail: 'User deleted successfully', life: 3000 });
-
-        // Remove the user from the list
-        const filteredUsers = users.filter(user => user.id !== rowData.id);
-        setUsers(filteredUsers);
-
-        // // Optionally set the message state to use in a message popup
-        // setMessage('User status updated successfully');
-      } else {
-        throw new Error(result.message || 'Failed to deleted user');
-      }
-
-    } catch (error) {
-      toast.error(`Error: ${error.message}`);
-    }
-  };
 
   const actionBodyTemplate = (rowData) => {
     return (
       <div className="flex space-x-2">
-        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success" onClick={() => onUpdate(rowData)} />
         <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => onDelete(rowData)} />
         <Button icon="pi pi-info-circle" className="p-button-rounded p-button-info" onClick={() => showModal(rowData)} />
       </div>
@@ -242,12 +198,21 @@ const Marketplace = () => {
       backgroundColor: statusColor,
       padding: '4px',
       borderRadius: '4px',
+      width: '150px'
     };
 
     return (
       <div style={statusStyle}>
-        <Dropdown value={rowData.status} options={statusOptions} onChange={(e) => onStatusChange(e, rowData)} style={{ width: '100%' }} />
+        <Dropdown
+          value={rowData.status}
+          options={statusOptions}
+          onChange={(e) => onStatusChange(e, rowData)}
+          style={{
+            width: '140px', // Change width conditionally
+          }}
+        />
       </div>
+
     );
   };
 
@@ -475,7 +440,8 @@ const Marketplace = () => {
       />
     </div>
   );
-
+  
+  
   const handleDialogConfirmresponse = async (isSuccess) => {
     const status = isSuccess ? 1 : 2;
     const updatedUsers = selectedUsers.map(user => ({
@@ -568,7 +534,73 @@ const Marketplace = () => {
     // Close bottom sheet
     setBottomSheetVisible(false);
   };
+  
 
+   // Function to handle showing the delete confirmation dialog
+   const onDelete = (rowData) => {
+    setSelectedUser(rowData); // Set the selected user for deletion
+    setdeleteDialogVisible(true); // Show the dialog
+  };
+
+  // Function to handle the confirmation of deletion
+  const handleDeleteUserDialogConfirm = async (isConfirmed) => {
+    if (isConfirmed && selectedUser) {
+      // User confirmed the deletion
+      const token = localStorage.getItem('token'); // Get token from localStorage
+      try {
+        const response = await fetch(`${API_ENDPOINTS.NewUsersDetete}${selectedUser.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to delete user');
+        }
+
+        const result = await response.json(); // Parse the response JSON
+
+        if (result.message === 'User deleted successfully') {
+          toast.current.show({ severity: 'success', summary: 'Success', detail: 'User deleted successfully', life: 3000 });
+
+          // Update the user list here as needed
+          const filteredUsers = users.filter(user => user.id !== selectedUser.id);
+          setUsers(filteredUsers);
+        } else {
+          throw new Error(result.message || 'Failed to delete user');
+        }
+      } catch (error) {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: error.message, life: 3000 });
+      }
+    } else {
+      // User cancelled the deletion
+      toast.current.show({ severity: 'info', summary: 'Cancelled', detail: 'Delete action cancelled', life: 3000 });
+    }
+
+    // Close the dialog and clear selected user
+    setdeleteDialogVisible(false);
+    setSelectedUser(null);
+  };
+
+  // Footer for the delete confirmation dialog
+  const deletedialogFooter =  (
+    <div>
+      <Button
+        label="Delete"
+        icon="pi pi-check"
+        className="p-button-success"
+        onClick={() => handleDeleteUserDialogConfirm(true)}
+      />
+      <Button
+        label="Cancel"
+        icon="pi pi-times"
+        className="p-button-danger"
+        onClick={() => handleDeleteUserDialogConfirm(false)}
+      />
+    </div>
+  );
 
   return (
     <div className="container mx-auto mt-5 mb-3">
@@ -579,12 +611,30 @@ const Marketplace = () => {
         onHide={() => setDialogVisible(false)}
         footer={dialogFooter}
         className="custom-dialog"
+        headerStyle={{
+          backgroundColor: '#02db09',
+        }}
       >
         <p>
           {isSuccess === null
             ? 'Do you want to register successful users or not successful users?'
             : `You have selected ${selectedUsers.length} users. Approve ${isSuccess ? 'Success' : 'Not Success'} users?`
           }
+        </p>
+      </Dialog>
+
+      <Dialog
+        header="Confirm Delete"
+        visible={deletedialogVisible}
+        onHide={() => setdeleteDialogVisible(false)}
+        footer={deletedialogFooter}
+        className="custom-dialog"
+        headerStyle={{
+          backgroundColor: 'red',
+        }}
+      >
+        <p>
+            Do you want to delete this selected user?
         </p>
       </Dialog>
 
@@ -613,7 +663,7 @@ const Marketplace = () => {
 
       </div>
 
-      <ImageFullScreanModal isOpen={isModalOpen} onClose={handleCloseModal} content={modalContent} position={modalPosition}  className="fullscreen-image" />
+      <ImageFullScreanModal isOpen={isModalOpen} onClose={handleCloseModal} content={modalContent} position={modalPosition} className="fullscreen-image" />
       <div className="mb-4 flex">
         <h1 className='mr-5 bg-blueSecondary text-white text-md p-2'>Search</h1>
         <input

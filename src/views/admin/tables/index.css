@@ -1,0 +1,27 @@
+/* Base style for tab items */
+.p-tabview .p-tabview-nav li {
+    border-radius: 0.25rem; /* Rounded corners for tabs */
+}
+
+/* Not selected */
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    border-color: white; /* Border color for non-selected tabs */
+    background: white; /* Background color for non-selected tabs */
+    color: rgba(0, 0, 128, 0.571); /* Text color for non-selected tabs */
+    transition: background 0.3s, color 0.3s, border-color 0.3s; /* Smooth transition */
+}
+
+/* Hover */
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+    background: orange; /* Background color on hover */
+    border-color: brown; /* Border color on hover */
+    color: navy; /* Text color on hover */
+}
+
+/* Selected */
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    background: #001536; /* Background color for selected tab */
+    border-color: #001536; /* Border color for selected tab */
+    color: white; /* Text color for selected tab */
+    font-weight: bold; /* Bold text for selected tab */
+}
