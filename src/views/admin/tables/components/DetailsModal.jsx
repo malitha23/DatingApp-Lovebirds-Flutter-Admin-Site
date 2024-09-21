@@ -41,7 +41,14 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
                 console.log('Initial data fetched:', data);
 
                 if (data.length > 0) {
-                    const priceString = data[0].price;
+                    let priceString = data[0].price; // Change const to let
+                    const discount = data[0].discount;
+
+                    if (discount === 1) {
+                        priceString = data[0].discount_show_value; // This is now valid
+                    }
+
+
                     const priceValue = parseFloat(priceString.split(' ')[0]); // Convert to float for accurate calculations
                     console.log('Price value:', priceValue);
                     setPackagePrice(priceValue);
@@ -72,7 +79,7 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
         const newStatus = e.target.value;
         const approvedValue = newStatus === '1' ? 1 : newStatus === '-1' ? -1 : 0; // Assuming '1' means approved
         setPaymentStatus(newStatus);
-    
+
         try {
             const token = localStorage.getItem('token');
             const response = await fetch(`${API_ENDPOINTS.approveOrrejectPendingPackagesPayments}`, {
@@ -95,9 +102,9 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
                     approved: approvedValue === 0 ? 0 : 1,
                 }),
             });
-    
+
             const data = await response.json();
-    
+
             if (response.ok) {
                 // Show success toast
                 toast.current.show({ severity: 'success', summary: 'Success', detail: data.message || 'Payment status updated successfully' });
@@ -112,8 +119,8 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while updating the payment status' });
         }
     };
-    
-    
+
+
 
     const handlePriceChange = (e) => {
         const newPrice = parseFloat(e.target.value) || 0; // Convert to float or set to 0 if input is empty
@@ -152,7 +159,7 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
 
     return (
         <>
-<Toast ref={toast} />
+            <Toast ref={toast} />
             <Dialog header="Payment Details" visible={true} onHide={onClose} style={{ width: '50vw' }}>
                 <div className="status-container">
                     <p><strong>Status:</strong>
