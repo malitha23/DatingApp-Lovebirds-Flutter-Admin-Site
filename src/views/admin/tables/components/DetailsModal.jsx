@@ -91,6 +91,8 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
                 body: JSON.stringify({
                     id: item.id,
                     userId: item.userId,
+                    firstName: item.firstName,
+                    lastName: item.lastName,
                     status: approvedValue,
                     price: price,
                     duration: months === 0 ? 1 : months,
@@ -100,6 +102,9 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
                     payment_date: new Date(item.payment_date).toISOString(),
                     payment_method: item.payment_method,
                     approved: approvedValue === 0 ? 0 : 1,
+                    whatsAppNumber: item.whatsAppNumber,
+                    discountApplied: item.withDiscount,
+                    packagePrice: packagePrice
                 }),
             });
 
@@ -109,7 +114,10 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
                 // Show success toast
                 toast.current.show({ severity: 'success', summary: 'Success', detail: data.message || 'Payment status updated successfully' });
                 onUpdateStatus();
-                // onClose();
+                setTimeout(() => {
+                  onClose();
+                }, 2000); // Delay of 2 seconds (2000 milliseconds)
+                
             } else {
                 // Show error toast
                 toast.current.show({ severity: 'error', summary: 'Error', detail: data.message || 'Failed to update payment status' });
@@ -160,18 +168,29 @@ const DetailsModal = ({ item, onClose, onUpdateStatus }) => {
     return (
         <>
             <Toast ref={toast} />
-            <Dialog header="Payment Details" visible={true} onHide={onClose} style={{ width: '50vw' }}>
+            <Dialog header="Payment Details" visible={true} onHide={onClose} style={{
+                width: '100%', // Default for desktop
+                maxWidth: '90vw', // Ensure the dialog doesn't exceed viewport width on mobile
+            }}
+                className="custom-dialog">
                 <div className="status-container">
-                    <p><strong>Status:</strong>
+                    <p>
+                        <strong>Status:</strong>
                         <span className="highlight">
                             {item.payment_status === 0 ? (
-                                <select value={paymentStatus} onChange={handleStatusChange}>
+                                <select
+                                    value={paymentStatus}
+                                    onChange={handleStatusChange}
+                                    className="status-select"
+                                >
                                     <option value={0}>Pending</option>
                                     <option value={1}>Approved</option>
                                     <option value={-1}>Rejected</option>
                                 </select>
+                            ) : item.payment_status === 1 ? (
+                                <span className="status-approved">Approved</span>
                             ) : (
-                                item.payment_status === 1 ? 'Approved' : 'Rejected'
+                                <span className="status-rejected">Rejected</span>
                             )}
                         </span>
                     </p>

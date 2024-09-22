@@ -3,11 +3,12 @@
 .details-modal-content {
     font-family: Arial, sans-serif;
     padding: 20px;
-    background-color: #fff;
+    background-color: #101067bf;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: space-between;
+    color: #f5dbdb;
 }
 
 .details-modal-content .left-column,
@@ -26,13 +27,13 @@
     padding-left: 20px; /* Space between columns */
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align items to the right */
+    align-items: flex-start; /* Align items to the right */
 }
 
 .details-modal-content .top-right {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
 }
 
 .details-modal-content .top-left {
@@ -41,13 +42,20 @@
 }
 
 .details-modal-content p {
-    margin: 10px 0;
+    margin: 9px 0;
     font-size: 16px;
 }
 
+.details-modal-content p strong{
+    font-size: 14px;
+    background-color: #383b63;
+    padding: 7px 10px;
+    border-radius: 5px;
+}
+
 .details-modal-content .highlight {
-    font-weight: bold;
-    color: #333;
+    color: #f5dbdb;
+    margin-left: 5px;
 }
 
 .details-modal-content input[type="text"] {
@@ -57,10 +65,13 @@
     width: 100%;
     box-sizing: border-box;
     font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 .details-modal-content input[type="text"]:focus {
-    border-color: #007bff;
+    border-color: #f68989;
     outline: none;
 }
 
@@ -91,7 +102,7 @@
 }
 
 .p-dialog .p-dialog-header {
-    background-color: #007bff;
+    background-color: #101067;
     color: #fff;
     border-radius: 8px 8px 0 0;
 }
@@ -113,8 +124,42 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    padding: 10px;
+    background-color: #101067;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    color: #fff;
 }
 
-.status-container p {
+
+.status-container p strong{
+    color: #d6d1d1;
+  }
+
+  .status-container p {
     margin: 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .highlight {
+    margin-left: 15px;
+
+  }
+  
+  .status-select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  
+
+  .my-custom-popup {
+    z-index: 999999; /* Set your desired z-index */
 }

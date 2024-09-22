@@ -283,7 +283,7 @@ const Marketplace = () => {
   const showModal = (user) => {
     // Find the user in the usersAllUsers array based on the ID
     const fullUserDetails = usersAllUsers.find(fullUser => fullUser.user_id === user.id);
-
+console.log(fullUserDetails);
     if (fullUserDetails) {
       setSelectedUser(fullUserDetails);
       setModalVisible(true);
@@ -665,7 +665,7 @@ const Marketplace = () => {
 
       <ImageFullScreanModal isOpen={isModalOpen} onClose={handleCloseModal} content={modalContent} position={modalPosition} className="fullscreen-image" />
       <div className="mb-4 flex">
-        <h1 className='mr-5 bg-blueSecondary text-white text-md p-2'>Search</h1>
+        <h1 className='mr-5 bg-blueSecondarycolor text-white text-md p-2'>Search</h1>
         <input
           type="text"
           value={searchTerm}
@@ -717,6 +717,8 @@ const Marketplace = () => {
         handleOpenModal={handleOpenModal}
         formatInterests={formatInterests}
         API_ENDPOINTS={API_ENDPOINTS}
+        users={users}
+        setUsers={setUsers}
       />
     </div>
   );

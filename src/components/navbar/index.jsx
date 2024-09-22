@@ -17,12 +17,12 @@ const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
 
-  
+
   const handleLogout = () => {
     localStorage.removeItem('token');
-    window.location.href = '/'; 
+    window.location.href = '/';
   };
-  
+
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
       <div className="ml-[6px]">
@@ -215,17 +215,24 @@ const Navbar = (props) => {
                 >
                   Newsletter Settings
                 </a>
-                <a
+                <button
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent default anchor behavior
+                    e.preventDefault(); // Not necessary here since buttons don't have default behavior
                     handleLogout();
                   }}
-                  role="button"
-                  tabIndex={0}
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-700 transition duration-150 ease-out hover:ease-in"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    font: 'inherit',
+                  }}
+                  aria-label="Log Out" // Accessibility label
                 >
                   Log Out
-                </a>
+                </button>
+
               </div>
             </div>
           }
