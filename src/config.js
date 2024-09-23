@@ -14,6 +14,9 @@ export const API_ENDPOINTS = {
   getSubcriptionPackagesForPendingPackagesPayments: `${API_BASE_URL}/admin/getSubcriptionPackagesForPendingPackagesPayments`,
   approveOrrejectPendingPackagesPayments: `${API_BASE_URL}/admin/approveOrrejectPendingPackagesPayments`,
   sendmessagewhatsappwhatsappstatus: `${API_BASE_URL}/send-message-whatsapp/whatsapp-status`,
-  sendmessagewhatsappsend: `${API_BASE_URL}/send-message-whatsapp/send`
+  sendmessagewhatsappsend: `${API_BASE_URL}/send-message-whatsapp/send`,
+  getPendingHeartsPackagespayments: `${API_BASE_URL}/admin/pending-Heartspackages-payments`,
+  getHearsPackagesForPendingPackagesPayments: `${API_BASE_URL}/admin/getHearsPackagesForPendingPackagesPayments`,
+  approveOrRejectPendingHeartsPackagesPayments: `${API_BASE_URL}/admin/approveOrRejectPendingHeartsPackagesPayments`,
   // Add other endpoints here as needed
 };

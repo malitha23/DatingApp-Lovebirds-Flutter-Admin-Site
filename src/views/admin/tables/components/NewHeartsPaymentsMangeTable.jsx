@@ -3,10 +3,10 @@ import { API_ENDPOINTS } from '../../../../config';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import DetailsModal from './DetailsModal'; // Import the DetailsModal component
-import './css/NewPaymentsMangeTable.css'; // Import the CSS file
+import HeartsDetailsModal from './HeartsDetailsModal'; // Import the DetailsModal component
+import './css/NewHeartsPaymentsMangeTable.css'; // Import the CSS file
 
-const NewPaymentsMangeTable = () => {
+const NewHeartsPaymentsMangeTable = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -17,8 +17,8 @@ const NewPaymentsMangeTable = () => {
         const token = localStorage.getItem('token'); // Get token from localStorage
 
         try {
-            const response = await fetch(API_ENDPOINTS.getPendingPackagespayments, {
-                method: 'GET', // HTTP method
+            const response = await fetch(API_ENDPOINTS.getPendingHeartsPackagespayments, {
+                method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`, // Authorization header with token
                     'Content-Type': 'application/json',
@@ -34,10 +34,16 @@ const NewPaymentsMangeTable = () => {
             console.log(result);
 
             // Process the data to add 'name' field
-            const processedData = result.data.map(item => ({
+            const processedData = result.map(item => ({
                 ...item,
-                name: `${item.firstName || ''} ${item.lastName || ''}`.trim(), // Combine firstName and lastName
-                payment_date: new Date(item.payment_date).toLocaleString('en-GB', {
+                name: `${item.firstName || ''} ${item.lastName || ''}`.trim(),
+                total_price: item.total_price,
+                payment_method: item.payment_method || 'N/A',
+                bank_receipt_image: item.bank_receipt_image,
+                approved: item.approved,
+                hearts: item.hearts || 0,
+                withrefaral_code: item.withrefaral_code || 'N/A',
+                formatedpayment_date: new Date(item.payment_date).toLocaleString('en-GB', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -46,6 +52,8 @@ const NewPaymentsMangeTable = () => {
                     hour12: false // 24-hour format
                 })
             }));
+            
+            
             setData(processedData); // Set processed data to state
             setLoading(false);
         } catch (error) {
@@ -53,6 +61,7 @@ const NewPaymentsMangeTable = () => {
             setLoading(false);
         }
     }, []);
+
 
     useEffect(() => {
         fetchData();
@@ -93,10 +102,16 @@ const NewPaymentsMangeTable = () => {
                 <Column field="id" header="ID" sortable />
                 <Column field="userId" header="User ID" sortable />
                 <Column field="name" header="Name" sortable />
-                <Column field="price" header="Price" sortable />
-                <Column field="plan_name" header="Plan Name" sortable />
+                <Column field="hearts" header="Hearts" sortable />
+                <Column
+                    field="total_price"
+                    header="Price (Rs)"
+                    sortable
+                    body={(rowData) => `Rs ${rowData.total_price}`}
+                />
+
                 <Column field="payment_method" header="Payment Method" sortable />
-                <Column field="payment_date" header="Payment Date" sortable />
+                <Column field="formatedpayment_date" header="Payment Date" sortable />
                 <Column
                     header="Actions"
                     body={(rowData) => (
@@ -109,14 +124,14 @@ const NewPaymentsMangeTable = () => {
                 />
             </DataTable>
             {modalVisible && selectedItem && (
-                <DetailsModal
+                <HeartsDetailsModal
                     item={selectedItem}
                     onClose={() => setModalVisible(false)} // Hide modal
-                    onUpdateStatus={fetchData} 
+                    onUpdateStatus={fetchData}
                 />
             )}
         </>
     );
 };
 
-export default NewPaymentsMangeTable;
+export default NewHeartsPaymentsMangeTable;

@@ -75,11 +75,11 @@ const App = () => {
       // Check WhatsApp connection status if authenticated
       checkWhatsAppConnection();
       
-      // Set interval to poll every 5 seconds for WhatsApp status
-      const intervalId = setInterval(checkWhatsAppConnection, 5000);
+      // // Set interval to poll every 5 seconds for WhatsApp status
+      // const intervalId = setInterval(checkWhatsAppConnection, 5000);
       
-      // Clear the interval on component unmount
-      return () => clearInterval(intervalId);
+      // // Clear the interval on component unmount
+      // return () => clearInterval(intervalId);
     }
   }, [isAuthenticated]);
 

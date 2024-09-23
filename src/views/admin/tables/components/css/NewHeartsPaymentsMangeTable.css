@@ -1,0 +1,109 @@
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem;
+    background-color: #001536ed;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .table-header h5 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1rem;
+  }
+  
+  .p-input-icon-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .p-input-icon-left .pi {
+    color: #999;
+    margin-left: 0.5rem;
+  }
+  
+  .p-inputtext {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem;
+    padding-left: 1.5rem;
+    font-size: 1rem;
+    width: 250px; /* Adjust width as needed */
+    color: #333;
+  }
+  
+  .p-inputtext:focus {
+    border-color: #007ad9;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+  }
+  
+  .p-datatable {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  /* .p-datatable-header {
+    background-color: #007ad9;
+    color: #fff;
+  } */
+  
+  .p-datatable-thead > tr > th {
+    font-weight: bold;
+    text-align: center;
+    background-color: #001536ed;
+    color: #ddd;
+  }
+  
+  .p-datatable-tbody > tr > td {
+    text-align: center;
+  }
+  
+
+  
+  /* Custom button style */
+.custom-button {
+    background-color: #001536; /* Set background color */
+    border-color: #001536; /* Ensure border matches background */
+    color: white; /* Set text color to white */
+}
+
+/* Custom button icon color */
+.custom-button{
+    color: white; /* Set icon color to white */
+}
+
+/* Optional: Hover effect for button */
+.custom-button:hover {
+    background-color: #003366; /* Slightly lighter background on hover */
+    border-color: #003366; /* Ensure border matches hover background */
+}
+
+/* Optional: Active state for button */
+.custom-button :active {
+    background-color: #000d1a; /* Darker background on click */
+    border-color: #000d1a; /* Ensure border matches active background */
+}
+
+  /* Media query for mobile devices */
+@media (max-width: 768px) {
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-header h5 {
+    margin-bottom: 10px;
+  }
+
+  .table-header .p-input-icon-left {
+    width: 100%;
+  }
+
+  .table-header .p-input-icon-left input {
+    width: 100%;
+  }
+}
