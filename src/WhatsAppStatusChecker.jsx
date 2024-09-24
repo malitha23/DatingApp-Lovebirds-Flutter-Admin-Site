@@ -31,11 +31,6 @@ const WhatsAppStatusChecker = () => {
     }
   };
 
-  useEffect(() => {
-    const intervalId = setInterval(fetchStatus, 2000);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   useEffect(() => {
     if (status.connected) {
@@ -46,6 +41,12 @@ const WhatsAppStatusChecker = () => {
       return () => clearTimeout(timeoutId); // Clear timeout on unmount
     }
   }, [status.connected, navigate]);
+
+  useEffect(() => {
+    const intervalId = setInterval(fetchStatus, 2000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleQRCodeError = () => {
     console.error("Failed to generate QR code.");
