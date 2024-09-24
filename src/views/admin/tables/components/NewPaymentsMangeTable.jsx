@@ -37,7 +37,7 @@ const NewPaymentsMangeTable = () => {
             const processedData = result.data.map(item => ({
                 ...item,
                 name: `${item.firstName || ''} ${item.lastName || ''}`.trim(), // Combine firstName and lastName
-                payment_date: new Date(item.payment_date).toLocaleString('en-GB', {
+                formatedpayment_date: new Date(item.payment_date).toLocaleString('en-GB', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -96,7 +96,7 @@ const NewPaymentsMangeTable = () => {
                 <Column field="price" header="Price" sortable />
                 <Column field="plan_name" header="Plan Name" sortable />
                 <Column field="payment_method" header="Payment Method" sortable />
-                <Column field="payment_date" header="Payment Date" sortable />
+                <Column field="formatedpayment_date" header="Payment Date" sortable />
                 <Column
                     header="Actions"
                     body={(rowData) => (
