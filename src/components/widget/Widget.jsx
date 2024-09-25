@@ -1,6 +1,6 @@
 import Card from "components/card";
 
-const Widget = ({ icon, title, subtitle }) => {
+const Widget = ({ icon, title, subtitle, subtitle2 }) => {
   return (
     <Card extra="!flex-row flex-grow items-center rounded-[20px]">
       <div className="ml-[18px] flex h-[90px] w-auto flex-row items-center">
@@ -16,6 +16,9 @@ const Widget = ({ icon, title, subtitle }) => {
         <h4 className="text-xl font-bold text-navy-700 dark:text-white">
           {subtitle}
         </h4>
+        <h6 className=" text-navy-700 font-bold dark:text-white" style={{fontSize:'12px', opacity:'0.7'}}>
+          {subtitle2}
+        </h6>
       </div>
     </Card>
   );

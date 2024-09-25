@@ -18,5 +18,7 @@ export const API_ENDPOINTS = {
   getPendingHeartsPackagespayments: `${API_BASE_URL}/admin/pending-Heartspackages-payments`,
   getHearsPackagesForPendingPackagesPayments: `${API_BASE_URL}/admin/getHearsPackagesForPendingPackagesPayments`,
   approveOrRejectPendingHeartsPackagesPayments: `${API_BASE_URL}/admin/approveOrRejectPendingHeartsPackagesPayments`,
+  getadmindashboardpaymnetsdata: `${API_BASE_URL}/admin/getadmindashboardpaymnetsdata`,
+  getDailyPackagePaymentsDataToChart: `${API_BASE_URL}/admin/getDailyPackagePaymentsDataToChart`,
   // Add other endpoints here as needed
 };
