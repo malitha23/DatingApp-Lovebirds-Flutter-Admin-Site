@@ -79,7 +79,7 @@ const TotalSpent = () => {
           },
         });
         const data = await response.json();
-console.log(data);
+
         // Transform the fetched data into the weekly format
         const formattedData = {
           lastWeek: [],
@@ -101,7 +101,7 @@ console.log(data);
             day_of_month: dayString,
             total_approved_payments: dayData ? dayData.total_approved_payments : 0,
           });
-          console.log(formattedData);
+
         }
 
         // Fill the one week ago
@@ -154,7 +154,7 @@ console.log(data);
     const data = selectedData.map(item => item.total_approved_payments);
     const categories = selectedData.map(item => item.day_of_month);
 
-    setChartData([{ name: "Total Approved Payments", data, color: "#4318FF" }]);
+    setChartData([{ name: "Total Payments", data, color: "#4318FF" }]);
     setLineChartOptions(prevOptions => ({
       ...prevOptions,
       xaxis: {
@@ -164,11 +164,15 @@ console.log(data);
     }));
   }, [selectedWeek, weeklyPaymentData]);
 
+   // Calculate total approved payments for the selected week
+   const totalApprovedPayments = weeklyPaymentData[selectedWeek].reduce((total, item) => total + item.total_approved_payments, 0);
+
   return (
-    <Card extra="!p-[20px] text-center">
-    <h2 className="text-xl font-bold py-2">Weekly Monthly Package Payments</h2> {/* Adjust the title text and styles as needed */}
-  
-    <div className="flex justify-between">
+    <Card extra="text-center">
+    <h2 className="pb-[10px] text-xl font-bold py-2" style={{opacity:'0.8', color:'#101067'}}>Weekly Monthly Package Payments</h2> {/* Adjust the title text and styles as needed */}
+    <p className="text-s font-semibold" style={{opacity:'0.8', color:'black'}}>Total Payments: Rs {totalApprovedPayments}</p> {/* Display total payments */}
+
+    <div className="!p-[20px]  flex justify-between">
       <div className="flex items-center space-x-2">
         {Object.keys(weeklyPaymentData).map((week) => (
           <button
@@ -183,7 +187,7 @@ console.log(data);
       </div>
     </div>
   
-    <div className="h-full w-full">
+    <div className="pb-[5px]  h-full w-full">
       <LineChart series={chartData} options={lineChartOptions} />
     </div>
   </Card>

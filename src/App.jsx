@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { API_ENDPOINTS } from './config';
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-
+import "./index.css";
 // Import your components
 import AdminLayout from "layouts/admin"; // Assuming this is the main admin layout
 import Signin from "../src/views/auth/SignIn"; // Your Signin component
@@ -96,9 +96,16 @@ const App = () => {
   }, [loading, isAuthenticated, isAdmin, isConnected, navigate]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="loader"></div>
+          <br></br>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
   }
-
   return (
     <>
       <Routes>

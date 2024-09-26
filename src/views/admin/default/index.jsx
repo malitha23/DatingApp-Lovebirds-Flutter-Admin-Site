@@ -67,37 +67,37 @@ const Dashboard = () => {
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={`Total Earnings`}
-          subtitle={`Rs ${total.total_approved_payments}`}
+          subtitle={`Rs ${total.total_approved_payments.toFixed(2)}`}
           subtitle2={`From ${total.total_users_paid} Users`}
         />
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={`Total Earnings (Packages)`}
-          subtitle={`Rs ${packagesbuydata.total_approved_payments}`}
+          subtitle={`Rs ${packagesbuydata.total_approved_payments.toFixed(2)}`}
           subtitle2={`From ${packagesbuydata.total_users_paid} Users`}
         />
         <Widget
            icon={<MdBarChart className="h-7 w-7" />}
            title={`Total Earnings (Hearts)`}
-           subtitle={`Rs ${heartsbuydata.total_approved_payments}`}
+           subtitle={`Rs ${heartsbuydata.total_approved_payments.toFixed(2)}`}
            subtitle2={`From ${heartsbuydata.total_users_paid} Users`}
         />
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={`This Month Total Earnings`}
-          subtitle={`Rs ${totalcurrentmonth.total_approved_payments}`}
+          subtitle={`Rs ${totalcurrentmonth.total_approved_payments.toFixed(2)}`}
           subtitle2={`From ${totalcurrentmonth.total_users_paid} Users`}
         />
         <Widget
             icon={<MdBarChart className="h-7 w-7" />}
             title={`This Month Earnings (Packages)`}
-            subtitle={`Rs ${packagesbuydatacurrentmonth.total_approved_payments}`}
+            subtitle={`Rs ${packagesbuydatacurrentmonth.total_approved_payments.toFixed(2)}`}
             subtitle2={`From ${packagesbuydatacurrentmonth.total_users_paid} Users`}
         />
         <Widget
            icon={<MdBarChart className="h-7 w-7" />}
            title={`This Month Earnings (Hearts)`}
-           subtitle={`Rs ${heartsbuydatacurrentmonth.total_approved_payments}`}
+           subtitle={`Rs ${heartsbuydatacurrentmonth.total_approved_payments.toFixed(2)}`}
            subtitle2={`From ${heartsbuydatacurrentmonth.total_users_paid} Users`}
         />
       </div>
